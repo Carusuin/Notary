@@ -1,0 +1,122 @@
+{% for client in clients %}
+<div
+  class="bg-white border border-gray-100 rounded-[24px] p-6 shadow-sm hover:shadow-md transition-all group relative"
+>
+  <div
+    class="absolute top-6 right-6 flex gap-2 opacity-0 group-hover:opacity-100 transition-opacity"
+  >
+    <button
+      hx-get="/clients/edit/{{ client.id }}/"
+      hx-target="#modal-container"
+      class="p-2 text-gray-400 hover:text-blue-600 transition-colors"
+    >
+      <svg
+        class="w-5 h-5"
+        fill="none"
+        stroke="currentColor"
+        viewBox="0 0 24 24"
+      >
+        <path
+          d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"
+        ></path>
+      </svg>
+    </button>
+    <button
+      hx-delete="/clients/delete/{{ client.id }}/"
+      hx-confirm="Yakin ingin menghapus data {{ client.nama_lengkap }}?"
+      hx-target="#client-grid"
+      class="p-2 text-gray-400 hover:text-red-600 hover:bg-red-50 rounded-lg transition-all"
+    >
+      <svg
+        class="w-4 h-4"
+        fill="none"
+        stroke="currentColor"
+        viewBox="0 0 24 24"
+      >
+        <path
+          d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
+        ></path>
+      </svg>
+    </button>
+  </div>
+
+  <div class="mb-4">
+    <h3 class="font-bold text-gray-900 text-lg">{{ client.nama_lengkap }}</h3>
+    {% if client.is_perusahaan %}
+    <span
+      class="inline-block px-3 py-1 text-[10px] font-bold text-blue-600 bg-blue-50 rounded-lg uppercase tracking-wider mt-1"
+      >Perusahaan</span
+    >
+    {% else %}
+    <span
+      class="inline-block px-3 py-1 text-[10px] font-bold text-purple-600 bg-purple-50 rounded-lg uppercase tracking-wider mt-1"
+      >Perorangan</span
+    >
+    {% endif %}
+  </div>
+
+  <div class="space-y-3 text-sm text-gray-600">
+    <div class="flex items-center">
+      <span class="text-gray-400 mr-3 text-xs w-16">Kontak:</span>
+      <span class="font-medium text-gray-800"
+        >{{ client.nama_perusahaan|default:client.nama_lengkap }}</span
+      >
+    </div>
+    <div class="flex items-start">
+      <svg
+        class="w-4 h-4 mr-3 text-gray-400 mt-0.5"
+        fill="none"
+        stroke="currentColor"
+        viewBox="0 0 24 24"
+      >
+        <path
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="2"
+          d="M10 6H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V8a2 2 0 00-2-2h-5m-4 0V5a2 2 0 114 0v1m-4 0a2 2 0 104 0m-5 8a2 2 0 100-4 2 2 0 000 4zm0 0c1.306 0 2.417.835 2.83 2M9 14a3.001 3.001 0 00-2.83 2"
+        ></path>
+      </svg>
+      <span>{{ client.nik }}</span>
+    </div>
+    <div class="flex items-start">
+      <svg
+        class="w-4 h-4 mr-3 text-gray-400 mt-0.5"
+        fill="none"
+        stroke="currentColor"
+        viewBox="0 0 24 24"
+      >
+        <path
+          d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 012 2H3a2 2 0 012-2z"
+        ></path>
+      </svg>
+      <span class="truncate">{{ client.email }}</span>
+    </div>
+    <div class="flex items-start">
+      <svg
+        class="w-4 h-4 mr-3 text-gray-400 mt-0.5"
+        fill="none"
+        stroke="currentColor"
+        viewBox="0 0 24 24"
+      >
+        <path
+          d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"
+        ></path>
+      </svg>
+      <span class="leading-relaxed line-clamp-2">{{ client.alamat_ktp }}</span>
+    </div>
+  </div>
+
+  <div
+    class="mt-6 pt-4 border-t border-gray-50 flex justify-between items-center text-xs text-gray-400"
+  >
+    <div class="flex items-center">
+      <span class="font-bold text-gray-800 mr-1">5</span> dokumen
+    </div>
+    <span>{{ client.created_at|date:"d M" }}</span>
+  </div>
+</div>
+{% empty %}
+<div class="col-span-full py-20 text-center">
+  <p class="text-gray-400">Belum ada data klien.</p>
+</div>
+{% endfor %}

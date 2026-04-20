@@ -1,0 +1,158 @@
+<!doctype html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Notary System</title>
+
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/disable/all.min.css"
+    />
+
+    <style>
+      body {
+        background-color: #f8f9fa;
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+      }
+
+      /* Navbar Kustom Sesuai Desain Figma Anda */
+      .navbar-custom {
+        background: linear-gradient(to right, #4a00e0, #8e2de2);
+        border-radius: 0 0 20px 20px;
+        padding: 0.8rem 2rem;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+      }
+
+      .brand-box {
+        background: rgba(0, 0, 0, 0.2);
+        padding: 8px 20px;
+        border-radius: 12px;
+        color: white;
+        font-weight: bold;
+        text-decoration: none;
+        margin-right: 30px;
+      }
+
+      .nav-link {
+        color: rgba(255, 255, 255, 0.8) !important;
+        font-weight: 500;
+        margin: 0 10px;
+      }
+
+      .nav-link:hover,
+      .nav-link.active {
+        color: #fff !important;
+      }
+
+      /* Menghapus bullet points yang membandel */
+      .navbar-nav {
+        list-style: none !important;
+        padding-left: 0 !important;
+      }
+    </style>
+  </head>
+  <body>
+    <nav class="navbar navbar-expand-lg navbar-dark navbar-custom">
+      <div class="container-fluid">
+        <a class="brand-box" href="/">NOTARY</a>
+
+        <button
+          class="navbar-toggler"
+          type="button"
+          data-bs-toggle="collapse"
+          data-bs-target="#navbarNav"
+        >
+          <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarNav">
+          <ul class="navbar-nav mx-auto">
+            <li class="nav-item">
+              <a class="nav-link active" href="/">Dashboard</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="/clients/">Penghadap</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="/deeds/">Akta</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#">Arsip</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#">Billing</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#">Admin</a>
+            </li>
+          </ul>
+
+          <div class="navbar-text text-white">
+            <i class="fas fa-user-circle me-1"></i> Halo, Bartholomeus
+          </div>
+        </div>
+      </div>
+    </nav>
+
+    <div class="container mt-5">
+      <div class="row text-center">
+        <div class="col-md-3 mb-4">
+          <div class="card shadow-sm border-0 p-3">
+            <h6 class="text-muted">Total Penghadap</h6>
+            <h2 class="fw-bold text-primary">120</h2>
+          </div>
+        </div>
+        <div class="col-md-3 mb-4">
+          <div class="card shadow-sm border-0 p-3">
+            <h6 class="text-muted">Akta Selesai</h6>
+            <h2 class="fw-bold text-success">45</h2>
+          </div>
+        </div>
+        <div class="col-md-3 mb-4">
+          <div class="card shadow-sm border-0 p-3">
+            <h6 class="text-muted">Proses Arsip</h6>
+            <h2 class="fw-bold text-warning">12</h2>
+          </div>
+        </div>
+        <div class="col-md-3 mb-4">
+          <div class="card shadow-sm border-0 p-3">
+            <h6 class="text-muted">Tagihan Pending</h6>
+            <h2 class="fw-bold text-danger">8</h2>
+          </div>
+        </div>
+      </div>
+
+      <div class="row mt-4">
+        <div class="col-md-8">
+          <div class="card shadow-sm border-0 p-4" style="min-height: 300px">
+            <h5>Aktivitas Akta Terakhir</h5>
+            <hr />
+            <p class="text-muted italic">Belum ada aktivitas hari ini...</p>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="card shadow-sm border-0 p-4 bg-light">
+            <h5>Akses Cepat</h5>
+            <div class="d-grid gap-2 mt-3">
+              <button class="btn btn-outline-primary shadow-sm text-start">
+                <i class="fas fa-plus me-2"></i> Input Klien Baru
+              </button>
+              <button class="btn btn-outline-primary shadow-sm text-start">
+                <i class="fas fa-file-signature me-2"></i> Buat Draf Akta
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="container mt-4">{% block content %} {% endblock %}</div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  </body>
+</html>

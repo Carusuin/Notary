@@ -1,0 +1,181 @@
+<!doctype html>
+<html>
+  <head>
+    <style>
+      @page {
+        size: A4;
+        margin: 1.5cm 2cm;
+      }
+      body {
+        font-family: "Helvetica", "Arial", sans-serif;
+        line-height: 1.4;
+        color: #000;
+      }
+
+      /* HEADER - Tanpa Border per Baris */
+      .header {
+        text-align: center;
+        margin-bottom: 5px;
+      }
+      .header h1 {
+        margin: 0;
+        font-size: 16pt;
+        letter-spacing: 1px;
+      }
+      .header h2 {
+        margin: 2px 0;
+        font-size: 14pt;
+      }
+      .header p {
+        margin: 1px 0;
+        font-size: 8pt;
+        color: #333;
+      }
+
+      /* GARIS PEMBATAS TUNGGAL */
+      .hr-line {
+        border-bottom: 1.5pt solid #000;
+        margin-bottom: 2px;
+        width: 100%;
+      }
+      .hr-line-thin {
+        border-bottom: 0.5pt solid #000;
+        margin-bottom: 20px;
+        width: 100%;
+      }
+
+      .title {
+        text-align: center;
+        font-weight: bold;
+        font-size: 13pt;
+        margin: 25px 0 15px 0;
+        text-decoration: underline;
+      }
+
+      /* TABLE KONTEN - Bersih tanpa border */
+      .content-table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-bottom: 30px;
+      }
+      .content-table td {
+        padding: 4px 0;
+        font-size: 10.5pt;
+        border: none; /* Paksa hapus border */
+      }
+      .label {
+        width: 30%;
+      }
+      .sep {
+        width: 3%;
+      }
+      .value {
+        font-weight: bold;
+      }
+
+      /* FOOTER TTD */
+      .footer-table {
+        width: 100%;
+        margin-top: 40px;
+      }
+      .footer-table td {
+        width: 50%;
+        text-align: center;
+        font-size: 10.5pt;
+        vertical-align: top;
+      }
+      .sig-box {
+        height: 70px;
+      }
+
+      .timestamp {
+        text-align: center;
+        font-size: 7.5pt;
+        color: #666;
+        margin-top: 50px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="header">
+      <h1>KANTOR NOTARIS & PPAT</h1>
+      <h2>MAS BARTHO, S.H., M.Kn.</h2>
+      <p>SK Menteri Hukum & HAM RI No. AHU-001.AH.02.01 Tahun 2026</p>
+      <p>Jl. Pemuda No. 123, Klaten Tengah, Klaten, Jawa Tengah 57411</p>
+      <p>Telp: (0272) 321xxx | Email: bartho.notaris@email.com</p>
+    </div>
+
+    <div class="hr-line"></div>
+    <div class="hr-line-thin"></div>
+
+    <div class="title">TANDA TERIMA DOKUMEN AKTA</div>
+
+    <p style="font-size: 10.5pt">Telah diterima dari Klien/Penghadap:</p>
+
+    <table class="content-table">
+      <tr>
+        <td class="label">Nama Lengkap Klien</td>
+        <td class="sep">:</td>
+        <td class="value">{{ deed.client.name }}</td>
+      </tr>
+      <tr>
+        <td class="label">Nomor NIK Klien</td>
+        <td class="sep">:</td>
+        <td class="value">{{ deed.client.nik }}</td>
+      </tr>
+      <tr>
+        <td class="label">Nomor Akta</td>
+        <td class="sep">:</td>
+        <td class="value" style="color: #1a56db">{{ deed.no_akta }}</td>
+      </tr>
+      <tr>
+        <td class="label">Kategori Akta</td>
+        <td class="sep">:</td>
+        <td class="value">{{ deed.get_category_display }}</td>
+      </tr>
+      <tr>
+        <td class="label">Jenis Akta</td>
+        <td class="sep">:</td>
+        <td class="value">{{ deed.deed_type }}</td>
+      </tr>
+      <tr>
+        <td class="label">Tanggal Pembuatan</td>
+        <td class="sep">:</td>
+        <td class="value">{{ deed.date_created|date:"d F Y" }}</td>
+      </tr>
+      <tr>
+        <td class="label">Keterangan</td>
+        <td class="sep">:</td>
+        <td class="value">{{ deed.description|default:"-" }}</td>
+      </tr>
+    </table>
+
+    <p style="font-size: 10pt; font-style: italic">
+      Dokumen ini merupakan bukti resmi penerimaan berkas. Mohon disimpan dengan
+      baik.
+    </p>
+
+    <table class="footer-table">
+      <tr>
+        <td>
+          Yang Menyerahkan (Klien),
+          <div class="sig-box"></div>
+          <strong>{{ deed.client.name }}</strong>
+        </td>
+        <td>
+          Klaten, {{ "now"|date:"d F Y" }}<br />
+          Yang Menerima (Petugas),
+          <div class="sig-box"></div>
+          <strong><u>MAS BARTHO, S.H., M.Kn.</u></strong
+          ><br />
+          Notaris & PPAT Kabupaten Klaten
+        </td>
+      </tr>
+    </table>
+
+    <div class="timestamp">
+      Dicetak otomatis oleh Sistem Informasi Notaris pada {% now "d/m/Y H:i:s"
+      %}
+    </div>
+  </body>
+</html>

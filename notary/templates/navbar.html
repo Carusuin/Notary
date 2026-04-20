@@ -1,0 +1,117 @@
+<!doctype html>
+<html lang="id" class="h-full">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Notary System</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/htmx.org@1.9.10"></script>
+
+    <style>
+      @import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap");
+
+      /* 1. Sembunyikan scrollbar fisik (Cross-Browser) tanpa menghilangkan fungsi scroll */
+      html {
+        scrollbar-width: none; /* Firefox */
+        -ms-overflow-style: none; /* Internet Explorer & Edge Legacy */
+      }
+
+      /* Webkit (Chrome, Safari, Edge terbaru) */
+      ::-webkit-scrollbar {
+        display: none;
+        width: 0 !important;
+      }
+
+      body {
+        font-family: "Inter", sans-serif;
+        /* 2. Optimasi ketajaman teks (Antialiasing) */
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+        /* 3. Tipografi Modern: Letter-spacing negatif untuk kesan premium */
+        letter-spacing: -0.02em;
+        background-color: #f9fafb;
+        -ms-overflow-style: none;
+        scrollbar-width: none;
+      }
+
+      /* Sentuhan khusus pada elemen navigasi agar lebih modern */
+      nav a, nav p, nav span {
+        letter-spacing: -0.03em;
+      }
+    </style>
+  </head>
+
+  <body class="bg-gray-50 m-0 p-0 h-full overflow-x-hidden">
+    <nav
+      class="bg-gradient-to-r from-blue-950 via-blue-800 to-blue-950 shadow-xl rounded-none px-8 py-4 sticky top-0 z-50"
+    >
+      <div class="max-w-7xl mx-auto flex items-center justify-between">
+        <div>
+          <a href="/" class="text-white font-bold text-4xl tracking-tighter"
+            >NOTARY</a
+          >
+        </div>
+
+        <div class="hidden md:flex items-center space-x-10">
+          <a
+            href="/"
+            class="font-medium transition-all duration-200 {% if request.path == '/' %}text-white underline underline-offset-8 decoration-2{% else %}text-white/70 hover:text-white{% endif %}"
+            >Dashboard</a
+          >
+          <a
+            href="/clients/"
+            class="font-medium transition-all duration-200 {% if '/clients/' in request.path %}text-white underline underline-offset-8 decoration-2{% else %}text-white/70 hover:text-white{% endif %}"
+            >Client</a
+          >
+          <a
+            href="/deeds/"
+            class="font-medium transition-all duration-200 {% if '/deeds/' in request.path %}text-white underline underline-offset-8 decoration-2{% else %}text-white/70 hover:text-white{% endif %}"
+            >Akta</a
+          >
+          <a
+            href="/arsip/"
+            class="font-medium transition-all duration-200 {% if '/arsip/' in request.path %}text-white underline underline-offset-8 decoration-2{% else %}text-white/70 hover:text-white{% endif %}"
+            >Arsip</a
+          >
+          <a
+            href="/billing/"
+            class="font-medium transition-all duration-200 {% if '/billing/' in request.path %}text-white underline underline-offset-8 decoration-2{% else %}text-white/70 hover:text-white{% endif %}"
+            >Billing</a
+          >
+        </div>
+
+        <div class="flex items-center space-x-6 text-white">
+          <div class="text-right hidden sm:block">
+            <p class="text-[10px] opacity-70 leading-none uppercase tracking-wider font-bold mb-0.5">Administrator</p>
+            <p class="text-sm font-bold text-white tracking-tight">{{ user.username }}</p>
+          </div>
+          
+          <div class="flex items-center space-x-4">
+            <div class="w-10 h-10 bg-white/10 rounded-2xl flex items-center justify-center border border-white/20 shadow-inner">
+                <span class="font-black text-xs text-white uppercase">{{ user.username|slice:":2" }}</span>
+            </div>
+
+            <form action="{% url 'logout' %}" method="post" class="m-0 p-0 flex">
+                {% csrf_token %}
+                <button type="submit" class="p-2.5 bg-red-500/10 hover:bg-red-500 text-red-500 hover:text-white rounded-xl transition-all duration-300 group shadow-lg hover:shadow-red-500/40 border border-red-500/20" title="Keluar">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
+                    </svg>
+                </button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </nav>
+
+    <main id="main-content" class="max-w-7xl mx-auto px-6 pt-8 pb-20">
+      {% block content %} {% endblock %}
+    </main>
+
+    <script>
+      document.body.addEventListener("htmx:configRequest", (event) => {
+        event.detail.headers["X-CSRFToken"] = "{{ csrf_token }}";
+      });
+    </script>
+  </body>
+</html>

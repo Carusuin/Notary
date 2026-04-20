@@ -1,0 +1,79 @@
+{% extends 'navbar.html' %}
+
+{% block content %}
+<div class="p-6 max-w-4xl mx-auto">
+    <!-- Tombol Kembali -->
+    <a href="{% url 'finance:billing_list' %}" class="text-sm text-gray-500 hover:text-purple-600 mb-4 inline-block">
+        &larr; Kembali ke Daftar Billing
+    </a>
+
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <!-- Kolom Kiri: Rincian Biaya -->
+        <div class="md:col-span-2 space-y-6">
+            <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-100">
+                <h2 class="text-xl font-bold text-gray-800 mb-4">Rincian Tagihan Akta</h2>
+                <div class="space-y-3">
+                    <div class="flex justify-between border-b pb-2">
+                        <span class="text-gray-600">Honorarium Notaris</span>
+                        <span class="font-semibold">Rp {{ billing.honorarium|floatformat:2 }}</span>
+                    </div>
+                    <div class="flex justify-between border-b pb-2">
+                        <span class="text-gray-600">PPN (11%)</span>
+                        <span class="font-semibold text-gray-500">Rp {{ billing.ppn|floatformat:2 }}</span>
+                    </div>
+                    <div class="flex justify-between border-b pb-2 text-blue-600 font-bold">
+                        <span>Total Jasa Kantor (Inc. PPN)</span>
+                        <span>Rp {{ billing.total_tagihan|floatformat:2 }}</span>
+                    </div>
+                </div>
+
+                <!-- Bagian Pajak (Titipan) -->
+                <h3 class="text-lg font-bold text-gray-700 mt-8 mb-4 border-l-4 border-orange-500 pl-3">Estimasi Pajak (Titipan)</h3>
+                <div class="space-y-3 bg-orange-50 p-4 rounded-lg">
+                    <div class="flex justify-between border-b border-orange-200 pb-2">
+                        <span class="text-gray-600">PPh (2.5%)</span>
+                        <span class="font-semibold">Rp {{ billing.pph|floatformat:2 }}</span>
+                    </div>
+                    <div class="flex justify-between border-b border-orange-200 pb-2">
+                        <span class="text-gray-600">BPHTB (5%)</span>
+                        <span class="font-semibold">Rp {{ billing.bphtb|floatformat:2 }}</span>
+                    </div>
+                    <div class="flex justify-between">
+                        <span class="text-gray-600">PNBP</span>
+                        <span class="font-semibold">Rp {{ billing.pnbp|floatformat:2 }}</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Kolom Kanan: Status & Form Bayar -->
+        <div class="space-y-6">
+            <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-100">
+                <h3 class="text-sm font-bold text-gray-400 uppercase tracking-wider mb-4">Status Pembayaran</h3>
+                <div class="text-center p-4 rounded-lg {% if billing.status == 'PAID' %}bg-green-100 text-green-700{% else %}bg-red-100 text-red-700{% endif %} mb-4">
+                    <span class="text-2xl font-black">{{ billing.get_status_display }}</span>
+                </div>
+                
+                <div class="space-y-2">
+                    <p class="text-sm text-gray-600">Sisa Piutang:</p>
+                    <p class="text-2xl font-bold text-red-600">Rp {{ billing.sisa_tagihan|floatformat:2 }}</p>
+                </div>
+
+                <hr class="my-6">
+
+                <!-- Form Input Pembayaran -->
+                <form method="POST" class="space-y-4">
+                    {% csrf_token %}
+                    <div>
+                        <label class="block text-xs font-bold text-gray-500 mb-1">INPUT CICILAN/PELUNASAN</label>
+                        <input type="number" name="jumlah_bayar" class="w-full border-gray-300 rounded-lg focus:ring-purple-500 focus:border-purple-500" placeholder="Rp 0">
+                    </div>
+                    <button type="submit" class="w-full bg-purple-600 hover:bg-purple-700 text-white font-bold py-2 rounded-lg transition">
+                        Simpan Pembayaran
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
