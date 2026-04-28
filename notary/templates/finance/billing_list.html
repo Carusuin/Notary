@@ -1,4 +1,4 @@
-{% extends 'navbar.html' %} 
+{% extends request.htmx|yesno:"base_htmx.html,navbar.html" %} 
 {% load humanize %} 
 {% block content %}
 <div class="p-6">

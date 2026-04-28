@@ -1,12 +1,12 @@
 <div
   id="modal-backdrop"
-  class="fixed inset-0 bg-gray-900/50 backdrop-blur-sm z-50 flex items-center justify-center p-4 animate-in fade-in duration-300"
+  class="fixed inset-0 bg-gray-900/60 backdrop-blur-md z-[100] flex items-center justify-center p-4 animate-in fade-in duration-300"
 >
   <div
-    class="bg-white rounded-[28px] shadow-2xl w-full max-w-lg overflow-hidden transform transition-all scale-95 animate-in zoom-in-95 duration-300"
+    class="bg-white rounded-[28px] shadow-2xl w-full max-w-4xl overflow-hidden transform transition-all scale-95 animate-in zoom-in-95 duration-300"
   >
     <div
-      class="px-8 py-6 border-b border-gray-100 flex justify-between items-center"
+      class="px-8 py-6 border-b border-gray-100 flex justify-between items-center bg-white/80 backdrop-blur-md sticky top-0 z-10"
     >
       <div>
         <h2 class="text-xl font-bold text-gray-900">{% if client %}Edit Klien{% else %}Tambah Klien Baru{% endif %}</h2>
@@ -14,7 +14,7 @@
       </div>
       <button
         onclick="document.getElementById('modal-backdrop').remove()"
-        class="text-gray-400 hover:text-gray-600 transition-colors"
+        class="text-gray-400 hover:text-gray-600 transition-colors p-2 hover:bg-gray-100 rounded-full"
       >
         <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path d="M6 18L18 6M6 6l12 12"></path>
@@ -26,35 +26,37 @@
       hx-post="{% if client %}/clients/edit/{{ client.id }}/{% else %}/clients/add/{% endif %}"
       hx-target="#client-grid"
       hx-on::after-request="document.getElementById('modal-backdrop').remove()"
-      class="p-8 space-y-5"
+      class="p-8 space-y-6"
     >
       {% csrf_token %}
 
-      <div>
-        <label class="block text-sm font-semibold text-gray-700 mb-2">Nama Lengkap</label>
-        <input
-          type="text"
-          name="nama_lengkap"
-          value="{{ client.nama_lengkap|default:'' }}"
-          required
-          class="w-full px-4 py-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-blue-500 outline-none transition-all placeholder:text-gray-400"
-          placeholder="Contoh: Ahmad Yani"
-        />
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div>
+          <label class="block text-sm font-semibold text-gray-700 mb-2">Nama Lengkap</label>
+          <input
+            type="text"
+            name="nama_lengkap"
+            value="{{ client.nama_lengkap|default:'' }}"
+            required
+            class="w-full px-4 py-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-blue-500 outline-none transition-all placeholder:text-gray-400 text-sm"
+            placeholder="Contoh: Ahmad Yani"
+          />
+        </div>
+
+        <div>
+          <label class="block text-sm font-semibold text-gray-700 mb-2">NIK (KTP)</label>
+          <input
+            type="text"
+            name="nik"
+            value="{{ client.nik|default:'' }}"
+            required
+            class="w-full px-4 py-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-blue-500 outline-none transition-all text-sm"
+            placeholder="16 digit nomor induk kependudukan"
+          />
+        </div>
       </div>
 
-      <div>
-        <label class="block text-sm font-semibold text-gray-700 mb-2">NIK (KTP)</label>
-        <input
-          type="text"
-          name="nik"
-          value="{{ client.nik|default:'' }}"
-          required
-          class="w-full px-4 py-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-blue-500 outline-none transition-all"
-          placeholder="16 digit nomor induk kependudukan"
-        />
-      </div>
-
-      <div class="grid grid-cols-2 gap-4">
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
         <div>
           <label class="block text-sm font-semibold text-gray-700 mb-2">Nomor Telepon</label>
           <input
@@ -62,7 +64,7 @@
             name="nomor_telepon"
             value="{{ client.nomor_telepon|default:'' }}"
             required
-            class="w-full px-4 py-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-blue-500 outline-none transition-all"
+            class="w-full px-4 py-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-blue-500 outline-none transition-all text-sm"
             placeholder="0812..."
           />
         </div>
@@ -73,47 +75,46 @@
             name="email"
             value="{{ client.email|default:'' }}"
             required
-            class="w-full px-4 py-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-blue-500 outline-none transition-all"
+            class="w-full px-4 py-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-blue-500 outline-none transition-all text-sm"
             placeholder="name@mail.com"
+          />
+        </div>
+        <div>
+          <label class="block text-sm font-semibold text-gray-700 mb-2">Tanggal Lahir</label>
+          <input
+            type="date"
+            name="tanggal_lahir"
+            value="{{ client.tanggal_lahir|date:'Y-m-d' }}"
+            required
+            class="w-full px-4 py-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-blue-500 outline-none transition-all text-sm"
           />
         </div>
       </div>
 
       <div>
-        <label class="block text-sm font-semibold text-gray-700 mb-2">Tanggal Lahir</label>
-        <input
-          type="date"
-          name="tanggal_lahir"
-          value="{{ client.tanggal_lahir|date:'Y-m-d' }}"
-          required
-          class="w-full px-4 py-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-blue-500 outline-none transition-all"
-        />
-      </div>
-
-      <div>
-        <label class="block text-sm font-semibold text-gray-700 mb-2">Alamat Lengkap</label>
+        <label class="block text-sm font-semibold text-gray-700 mb-2">Alamat Lengkap (KTP)</label>
         <textarea
           name="alamat_ktp"
           rows="3"
           required
-          class="w-full px-4 py-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-blue-500 outline-none transition-all"
+          class="w-full px-4 py-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-blue-500 outline-none transition-all text-sm"
           placeholder="Jl. Slamet Riyadi No. 12..."
         >{{ client.alamat_ktp|default:'' }}</textarea>
       </div>
 
-      <div class="flex gap-3 pt-4">
+      <div class="flex gap-4 pt-6">
         <button
           type="button"
           onclick="document.getElementById('modal-backdrop').remove()"
-          class="flex-1 px-4 py-3 border border-gray-200 text-gray-700 font-semibold rounded-xl hover:bg-gray-50 transition-all"
+          class="flex-1 px-6 py-4 border border-gray-200 text-gray-500 font-bold rounded-2xl hover:bg-gray-50 transition-all uppercase tracking-widest text-xs"
         >
           Batal
         </button>
         <button
           type="submit"
-          class="flex-1 px-4 py-3 bg-blue-600 text-white font-semibold rounded-xl hover:bg-blue-700 shadow-lg shadow-blue-200 transition-all"
+          class="flex-[2] px-6 py-4 bg-blue-600 text-white font-bold rounded-2xl hover:bg-blue-700 shadow-2xl shadow-blue-200 transition-all active:scale-95 uppercase tracking-widest text-xs"
         >
-          {% if client %}Simpan Perubahan{% else %}Simpan Data{% endif %}
+          {% if client %}Simpan Perubahan{% else %}Tambah Klien{% endif %}
         </button>
       </div>
     </form>

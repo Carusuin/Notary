@@ -1,8 +1,8 @@
 <div
   id="modal-backdrop"
-  class="fixed inset-0 bg-gray-900/50 backdrop-blur-sm z-50 flex items-center justify-center p-4 animate-in fade-in duration-300"
+  class="fixed inset-0 bg-gray-900/60 backdrop-blur-md z-[100] flex items-center justify-center p-4 animate-in fade-in duration-300"
 >
-  <div class="bg-white rounded-[28px] shadow-2xl w-full max-w-4xl max-h-[90vh] overflow-y-auto transform transition-all scale-95 animate-in zoom-in-95 duration-300">
+  <div class="bg-white rounded-[28px] shadow-2xl w-full max-w-6xl max-h-[95vh] overflow-y-auto transform transition-all scale-95 animate-in zoom-in-95 duration-300">
     
     <div class="sticky top-0 z-10 px-8 py-6 border-b border-gray-100 flex justify-between items-center bg-white/80 backdrop-blur-md">
       <div>
@@ -22,20 +22,44 @@
       hx-target="#deed-table-body"
       hx-swap="innerHTML"
       hx-on::after-request="document.getElementById('modal-backdrop').remove()"
-      class="p-8 space-y-8"
+      class="p-8 space-y-10"
     >
       {% csrf_token %}
 
-      <div class="space-y-4">
-        <h3 class="text-xs font-bold uppercase tracking-wider text-blue-600">Dasar Akta & Scan</h3>
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-          <div class="md:col-span-1">
+      <!-- Section: Dasar Akta -->
+      <div class="space-y-6">
+        <div class="flex items-center space-x-2">
+            <div class="w-1 h-4 bg-blue-600 rounded-full"></div>
+            <h3 class="text-xs font-bold uppercase tracking-widest text-blue-600">Dasar Akta & Scan</h3>
+        </div>
+        
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div class="bg-gray-50 p-4 rounded-2xl border border-gray-100">
             <label class="block text-sm font-semibold text-gray-700 mb-2">Scan Dokumen</label>
-            <input type="file" name="file_scan" class="block w-full text-xs text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-xs file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100 border border-gray-100 rounded-xl p-1" />
+            <input type="file" name="file_scan" class="block w-full text-xs text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-xs file:font-semibold file:bg-blue-600 file:text-white hover:file:bg-blue-700 border border-gray-200 bg-white rounded-xl p-1" />
+          </div>
+          <div class="bg-gray-50 p-4 rounded-2xl border border-gray-100">
+            <label class="block text-sm font-semibold text-gray-700 mb-2">Pilih Klien</label>
+            <select name="client" required class="w-full px-4 py-2.5 rounded-xl border border-gray-200 focus:ring-2 focus:ring-blue-500 outline-none text-sm bg-white">
+                <option value="">-- Pilih Klien --</option>
+                {% for c in clients %}
+                <option value="{{ c.id }}" {% if deed.client.id == c.id %}selected{% endif %}>{{ c.nama_lengkap }}</option>
+                {% endfor %}
+            </select>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <div>
+            <label class="block text-sm font-semibold text-gray-700 mb-2">Kategori</label>
+            <select name="kategori" required class="w-full px-4 py-2.5 rounded-xl border border-gray-200 focus:ring-2 focus:ring-blue-500 outline-none text-sm">
+                <option value="NOTARIS" {% if deed.kategori == 'NOTARIS' %}selected{% endif %}>Notaris</option>
+                <option value="PPAT" {% if deed.kategori == 'PPAT' %}selected{% endif %}>PPAT</option>
+            </select>
           </div>
           <div>
-            <label class="block text-sm font-semibold text-gray-700 mb-2">Nomor Akta</label>
-            <input type="text" name="nomor_akta" value="{{ deed.nomor_akta|default:'' }}" required class="w-full px-4 py-2.5 rounded-xl border border-gray-200 focus:ring-2 focus:ring-blue-500 outline-none text-sm" placeholder="Contoh: 66" />
+            <label class="block text-sm font-semibold text-gray-700 mb-2">Jenis Akta</label>
+            <input type="text" name="jenis_akta" value="{{ deed.jenis_akta|default:'' }}" required class="w-full px-4 py-2.5 rounded-xl border border-gray-200 focus:ring-2 focus:ring-blue-500 outline-none text-sm" placeholder="Contoh: Pendirian PT" />
           </div>
           <div>
             <label class="block text-sm font-semibold text-gray-700 mb-2">Tanggal Akta</label>
@@ -44,62 +68,87 @@
         </div>
       </div>
 
-      <div class="space-y-4">
-        <h3 class="text-xs font-bold uppercase tracking-wider text-blue-600">Data Perusahaan (Perseroan)</h3>
+      <!-- Section: Data Perusahaan -->
+      <div class="space-y-6">
+        <div class="flex items-center space-x-2">
+            <div class="w-1 h-4 bg-blue-600 rounded-full"></div>
+            <h3 class="text-xs font-bold uppercase tracking-widest text-blue-600">Data Perusahaan (Perseroan)</h3>
+        </div>
+        
         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
           <div>
             <label class="block text-sm font-semibold text-gray-700 mb-2">Nama Perseroan (PT)</label>
-            <input type="text" name="nama_perseroan" value="{{ deed.nama_perseroan|default:'' }}" required class="w-full px-4 py-2.5 rounded-xl border border-gray-200 focus:ring-2 focus:ring-blue-500 outline-none text-sm font-bold" placeholder="PT. NUSANTARA TANI MAKMUR" />
+            <input type="text" name="nama_perseroan" value="{{ deed.nama_perseroan|default:'' }}" required class="w-full px-4 py-2.5 rounded-xl border border-gray-200 focus:ring-2 focus:ring-blue-500 outline-none text-sm font-bold" />
           </div>
           <div>
             <label class="block text-sm font-semibold text-gray-700 mb-2">Kedudukan</label>
-            <input type="text" name="kedudukan" value="{{ deed.kedudukan|default:'' }}" class="w-full px-4 py-2.5 rounded-xl border border-gray-200 focus:ring-2 focus:ring-blue-500 outline-none text-sm" placeholder="Kabupaten Sikka" />
+            <input type="text" name="kedudukan" value="{{ deed.kedudukan|default:'' }}" class="w-full px-4 py-2.5 rounded-xl border border-gray-200 focus:ring-2 focus:ring-blue-500 outline-none text-sm"/>
           </div>
         </div>
 
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 bg-blue-50/50 p-4 rounded-2xl border border-blue-100">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 bg-blue-50/50 p-6 rounded-[24px] border border-blue-100">
           <div>
-            <label class="block text-sm font-semibold text-blue-900 mb-1">Modal Dasar (Rp)</label>
-            <input type="text" name="modal_dasar" value="{{ deed.modal_dasar|default:'' }}" oninput="formatNumber(this)" class="w-full px-4 py-2 rounded-xl border border-blue-200 text-sm" placeholder="900.000.000" />
+            <label class="block text-sm font-semibold text-blue-900 mb-2">Modal Dasar (Rp)</label>
+            <div class="relative">
+                <span class="absolute inset-y-0 left-0 pl-4 flex items-center text-blue-400 font-bold text-xs">Rp</span>
+                <input type="text" name="modal_dasar" value="{{ deed.modal_dasar|default:'' }}" oninput="formatNumber(this)" class="w-full pl-10 pr-4 py-3 rounded-xl border border-blue-200 focus:ring-2 focus:ring-blue-500 outline-none text-sm font-bold text-blue-900" placeholder="900.000.000" />
+            </div>
           </div>
           <div>
-            <label class="block text-sm font-semibold text-blue-900 mb-1">Modal Disetor (Rp)</label>
-            <input type="text" name="modal_disetor" value="{{ deed.modal_disetor|default:'' }}" oninput="formatNumber(this)" class="w-full px-4 py-2 rounded-xl border border-blue-200 text-sm" placeholder="225.000.000" />
+            <label class="block text-sm font-semibold text-blue-900 mb-2">Modal Disetor (Rp)</label>
+            <div class="relative">
+                <span class="absolute inset-y-0 left-0 pl-4 flex items-center text-blue-400 font-bold text-xs">Rp</span>
+                <input type="text" name="modal_disetor" value="{{ deed.modal_disetor|default:'' }}" oninput="formatNumber(this)" class="w-full pl-10 pr-4 py-3 rounded-xl border border-blue-200 focus:ring-2 focus:ring-blue-500 outline-none text-sm font-bold text-blue-900" placeholder="225.000.000" />
+            </div>
           </div>
         </div>
       </div>
 
-      <div class="space-y-4">
+      <!-- Section: Pemegang Saham -->
+      <div class="space-y-6">
         <div class="flex justify-between items-center">
-            <h3 class="text-xs font-bold uppercase tracking-wider text-blue-600">Daftar Pemegang Saham</h3>
-            <button type="button" onclick="addTableRow('shareholder-table')" class="text-xs bg-blue-600 text-white px-3 py-1.5 rounded-lg hover:bg-blue-700 transition-colors">+ Tambah Orang</button>
+            <div class="flex items-center space-x-2">
+                <div class="w-1 h-4 bg-blue-600 rounded-full"></div>
+                <h3 class="text-xs font-bold uppercase tracking-widest text-blue-600">Daftar Pemegang Saham</h3>
+            </div>
+            <button type="button" onclick="addTableRow('shareholder-table')" class="text-xs bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-xl transition-all shadow-lg shadow-blue-200 active:scale-95 flex items-center">
+                <span class="mr-2">+</span> Tambah Orang
+            </button>
         </div>
-        <div class="overflow-x-auto border border-gray-100 rounded-2xl">
+        <div class="overflow-hidden border border-gray-100 rounded-[24px] shadow-sm bg-white">
             <table class="w-full text-sm text-left" id="shareholder-table">
-                <thead class="bg-gray-50 text-gray-600 font-semibold">
+                <thead class="bg-gray-50/80 text-gray-500 text-xs font-bold uppercase tracking-wider">
                     <tr>
-                        <th class="px-4 py-3">Nama Lengkap</th>
-                        <th class="px-4 py-3">NIK</th>
-                        <th class="px-4 py-3">Lembar Saham</th>
-                        <th class="px-4 py-3 w-10"></th>
+                        <th class="px-6 py-4">Nama Lengkap</th>
+                        <th class="px-6 py-4">NIK</th>
+                        <th class="px-6 py-4">Lembar Saham</th>
+                        <th class="px-6 py-4 w-10 text-center">Aksi</th>
                     </tr>
                 </thead>
                 <tbody class="divide-y divide-gray-50">
                     {% if deed.shareholders.all %}
                         {% for sh in deed.shareholders.all %}
                         <tr class="hover:bg-gray-50/50 transition-colors">
-                            <td class="p-2"><input type="text" name="sh_nama[]" value="{{ sh.nama }}" class="w-full px-3 py-1.5 border border-gray-200 rounded-lg text-xs"></td>
-                            <td class="p-2"><input type="text" name="sh_nik[]" value="{{ sh.nik }}" class="w-full px-3 py-1.5 border border-gray-200 rounded-lg text-xs"></td>
-                            <td class="p-2"><input type="number" name="sh_jumlah[]" value="{{ sh.jumlah_saham }}" class="w-full px-3 py-1.5 border border-gray-200 rounded-lg text-xs"></td>
-                            <td class="p-2"><button type="button" onclick="this.closest('tr').remove()" class="text-red-400 hover:text-red-600">×</button></td>
+                            <td class="px-4 py-3"><input type="text" name="sh_nama[]" value="{{ sh.nama }}" class="w-full px-4 py-2 border border-gray-200 rounded-xl text-sm focus:ring-2 focus:ring-blue-500 outline-none"></td>
+                            <td class="px-4 py-3"><input type="text" name="sh_nik[]" value="{{ sh.nik }}" class="w-full px-4 py-2 border border-gray-200 rounded-xl text-sm focus:ring-2 focus:ring-blue-500 outline-none"></td>
+                            <td class="px-4 py-3"><input type="number" name="sh_jumlah[]" value="{{ sh.jumlah_saham }}" class="w-full px-4 py-2 border border-gray-200 rounded-xl text-sm focus:ring-2 focus:ring-blue-500 outline-none"></td>
+                            <td class="px-4 py-3 text-center">
+                                <button type="button" onclick="this.closest('tr').remove()" class="p-2 text-red-400 hover:text-red-600 hover:bg-red-50 rounded-full transition-all">
+                                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M6 18L18 6M6 6l12 12"></path></svg>
+                                </button>
+                            </td>
                         </tr>
                         {% endfor %}
                     {% else %}
                         <tr class="hover:bg-gray-50/50 transition-colors">
-                            <td class="p-2"><input type="text" name="sh_nama[]" placeholder="Contoh: Mohamed Rafi" class="w-full px-3 py-1.5 border border-gray-200 rounded-lg text-xs"></td>
-                            <td class="p-2"><input type="text" name="sh_nik[]" placeholder="16 Digit" class="w-full px-3 py-1.5 border border-gray-200 rounded-lg text-xs"></td>
-                            <td class="p-2"><input type="number" name="sh_jumlah[]" placeholder="0" class="w-full px-3 py-1.5 border border-gray-200 rounded-lg text-xs"></td>
-                            <td class="p-2"><button type="button" onclick="this.closest('tr').remove()" class="text-red-400 hover:text-red-600">×</button></td>
+                            <td class="px-4 py-3"><input type="text" name="sh_nama[]" placeholder="Nama Lengkap" class="w-full px-4 py-2 border border-gray-200 rounded-xl text-sm focus:ring-2 focus:ring-blue-500 outline-none"></td>
+                            <td class="px-4 py-3"><input type="text" name="sh_nik[]" placeholder="16 Digit NIK" class="w-full px-4 py-2 border border-gray-200 rounded-xl text-sm focus:ring-2 focus:ring-blue-500 outline-none"></td>
+                            <td class="px-4 py-3"><input type="number" name="sh_jumlah[]" placeholder="0" class="w-full px-4 py-2 border border-gray-200 rounded-xl text-sm focus:ring-2 focus:ring-blue-500 outline-none"></td>
+                            <td class="px-4 py-3 text-center">
+                                <button type="button" onclick="this.closest('tr').remove()" class="p-2 text-red-400 hover:text-red-600 hover:bg-red-50 rounded-full transition-all">
+                                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M6 18L18 6M6 6l12 12"></path></svg>
+                                </button>
+                            </td>
                         </tr>
                     {% endif %}
                 </tbody>
@@ -107,23 +156,27 @@
         </div>
       </div>
 
-      <div class="space-y-4">
-        <h3 class="text-xs font-bold uppercase tracking-wider text-blue-600">Susunan Direksi & Komisaris</h3>
+      <!-- Section: Direksi -->
+      <div class="space-y-6">
+        <div class="flex items-center space-x-2">
+            <div class="w-1 h-4 bg-blue-600 rounded-full"></div>
+            <h3 class="text-xs font-bold uppercase tracking-widest text-blue-600">Susunan Direksi & Komisaris</h3>
+        </div>
         <div id="management-list" class="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div class="flex gap-2 p-3 bg-gray-50 rounded-xl border border-gray-100">
-                <select name="mg_jabatan[]" class="text-xs rounded-lg border-gray-200">
+            <div class="flex gap-3 p-4 bg-gray-50 rounded-[20px] border border-gray-100">
+                <select name="mg_jabatan[]" class="text-xs rounded-xl border-gray-200 bg-white px-3 focus:ring-2 focus:ring-blue-500 outline-none">
                     <option value="DIREKTUR_UTAMA">Direktur Utama</option>
                     <option value="DIREKTUR">Direktur</option>
                     <option value="KOMISARIS">Komisaris</option>
                 </select>
-                <input type="text" name="mg_nama[]" placeholder="Nama Pengurus" class="flex-1 text-xs rounded-lg border-gray-200">
+                <input type="text" name="mg_nama[]" placeholder="Nama Lengkap Pengurus" class="flex-1 text-sm rounded-xl border-gray-200 bg-white px-4 focus:ring-2 focus:ring-blue-500 outline-none">
             </div>
         </div>
       </div>
 
-      <div class="flex gap-4 pt-6 border-t border-gray-100">
-        <button type="button" onclick="document.getElementById('modal-backdrop').remove()" class="flex-1 px-6 py-3 border border-gray-200 text-gray-600 font-bold rounded-2xl hover:bg-gray-50 transition-all">Batal</button>
-        <button type="submit" class="flex-[2] px-6 py-3 bg-blue-600 text-white font-bold rounded-2xl hover:bg-blue-700 shadow-xl shadow-blue-200 transition-all active:scale-95">
+      <div class="flex gap-4 pt-10 border-t border-gray-100">
+        <button type="button" onclick="document.getElementById('modal-backdrop').remove()" class="flex-1 px-8 py-4 border border-gray-200 text-gray-500 font-bold rounded-[20px] hover:bg-gray-50 transition-all uppercase tracking-widest text-xs">Batal</button>
+        <button type="submit" class="flex-[2] px-8 py-4 bg-blue-600 text-white font-bold rounded-[20px] hover:bg-blue-700 shadow-2xl shadow-blue-200 transition-all active:scale-95 uppercase tracking-widest text-xs">
           {% if deed %}Simpan Perubahan{% else %}Finalisasi & Simpan Akta{% endif %}
         </button>
       </div>

@@ -1,4 +1,4 @@
-{% extends 'navbar.html' %} 
+{% extends request.htmx|yesno:"base_htmx.html,navbar.html" %} 
 
 {% block content %}
 <div class="animate-in fade-in duration-500">
@@ -18,25 +18,26 @@
     </button>
   </div>
 
-  <div class="flex gap-3 mb-8">
-    <div class="relative flex-1">
-      <span class="absolute inset-y-0 left-0 pl-3 flex items-center text-gray-400">
-        <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
-        </svg>
-      </span>
-      <input
-        type="text"
-        name="search"
-        hx-get="/clients/"
-        hx-trigger="keyup changed delay:500ms"
-        hx-target="#client-grid"
-        class="block w-full pl-10 pr-3 py-2 border border-gray-200 rounded-xl leading-5 bg-white placeholder-gray-400 focus:outline-none focus:ring-1 focus:ring-blue-500 sm:text-sm"
-        placeholder="Cari nama klien, email, atau nomor telepon..."
-      />
+  <div class="bg-white p-4 rounded-[24px] border border-gray-100 shadow-sm mb-8">
+    <div class="flex gap-3">
+      <div class="relative flex-1">
+        <span class="absolute inset-y-0 left-0 pl-3 flex items-center text-gray-400">
+          <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+          </svg>
+        </span>
+        <input
+          type="text"
+          name="search"
+          hx-get="/clients/"
+          hx-trigger="keyup changed delay:500ms"
+          hx-target="#client-grid"
+          class="block w-full pl-10 pr-3 py-2.5 border border-gray-200 rounded-xl leading-5 bg-gray-50/50 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 sm:text-sm transition-all"
+          placeholder="Cari nama klien, email, atau nomor telepon..."
+        />
+      </div>
     </div>
   </div>
-
   <div
     id="client-grid"
     class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
@@ -44,7 +45,8 @@
     {% include 'clients/client_card.html' %}
   </div>
 </div>
+{% endblock %}
 
+{% block extra_body %}
 <div id="modal-container"></div>
-
 {% endblock %}

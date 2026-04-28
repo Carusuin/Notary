@@ -27,13 +27,14 @@ def index_deeds(request):
             Q(client__nama_lengkap__icontains=search_query)
         )
         
-    if request.headers.get('HX-Request'):
+    if request.headers.get('HX-Request') and request.headers.get('HX-Target') == 'deed-table-body':
         # Kirim HANYA potongan tabel, agar tidak terjadi tumpukan UI
         return render(request, 'deeds/deed_table.html', {'deeds': deeds})
     
-    # Kirim HALAMAN UTUH saat pertama kali dibuka atau di-refresh
+    # Kirim HALAMAN UTUH atau PARTIAL UTUH (base_htmx) saat navigasi
     return render(request, 'deeds/index.html', {'deeds': deeds})
 
+@login_required
 def add_deed(request):
     if request.method == "POST":
         with transaction.atomic(): # Memastikan data tersimpan sepaket
@@ -44,9 +45,9 @@ def add_deed(request):
             deed = Deed.objects.create(
                 nomor_akta=request.POST.get('nomor_akta'),
                 jenis_akta=request.POST.get('jenis_akta'),
-                nama_perseroan=request.POST.get('nama_perseroan'), # PT. Nusantara Tani Makmur
-                modal_dasar=request.POST.get('modal_dasar', 0),
-                modal_disetor=request.POST.get('modal_disetor', 0),
+                nama_perseroan=request.POST.get('nama_perseroan'),
+                modal_dasar=request.POST.get('modal_dasar', '0').replace('.', ''),
+                modal_disetor=request.POST.get('modal_disetor', '0').replace('.', ''),
                 tanggal_buat=request.POST.get('tanggal_buat'),
                 client=client_obj,
                 keterangan=request.POST.get('keterangan', ''),
@@ -54,24 +55,27 @@ def add_deed(request):
             )
 
             # 2. Ambil List Data Pemegang Saham dari Form
-            # Asumsikan di HTML inputnya bernama: name="shareholder_nama[]"
             namas = request.POST.getlist('sh_nama[]')
             sahams = request.POST.getlist('sh_jumlah[]')
-            nominals = request.POST.getlist('sh_nominal[]')
+            # Tambahkan field lain jika ada (misal nik)
             
             for i in range(len(namas)):
-                if namas[i]: # Hanya simpan jika nama diisi
+                if namas[i]: 
                     Shareholder.objects.create(
                         deed=deed,
                         nama=namas[i],
-                        jumlah_saham=sahams[i] or 0,
-                        total_nominal=nominals[i].replace('.', '') or 0
+                        jumlah_saham=sahams[i] or 0
                     )
 
-        # Setelah sukses, tampilkan tabel terbaru (logic HTMX Anda)
+        # Setelah sukses, tampilkan tabel terbaru
         deeds = Deed.objects.all().order_by('-tanggal_buat')
         return render(request, 'deeds/deed_table.html', {'deeds': deeds})
+    
+    # Jika GET: Tampilkan modal form kosong
+    clients = Client.objects.all().order_by('nama_lengkap')
+    return render(request, 'deeds/deed_form.html', {'clients': clients})
 
+@login_required
 def edit_deed(request, pk):
     # Ambil data akta yang mau diedit, kalau tidak ada munculkan 404
     deed = get_object_or_404(Deed, pk=pk)
@@ -105,6 +109,7 @@ def edit_deed(request, pk):
     })
 
 @require_http_methods(["DELETE"])
+@login_required
 def delete_deed(request, pk):
     deed = get_object_or_404(Deed, pk=pk)
     deed.delete()
@@ -132,6 +137,7 @@ def link_callback(uri, rel):
         )
     return path
 
+@login_required
 def export_deed_pdf(request, pk):
     deed = get_object_or_404(Deed, pk=pk)
     template_path = 'deeds/pdf_template.html'

@@ -49,6 +49,7 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'django_htmx.middleware.HtmxMiddleware',
+    'apps.security.middleware.HtmxLoginRequiredMiddleware',
 ]
 
 ROOT_URLCONF = 'notary.urls'

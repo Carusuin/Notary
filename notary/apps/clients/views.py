@@ -5,10 +5,6 @@ from django.db.models import Q
 from django.contrib.auth.decorators import login_required
 
 @login_required
-def main(request):
-    return render(request,main.html)
-
-#SEARCH
 def client_list(request):
     query = request.GET.get('search', '')
     clients = Client.objects.all().order_by('-created_at')
@@ -21,12 +17,15 @@ def client_list(request):
             Q(alamat_ktp__icontains=query)
         )
     
-    if request.htmx:
+    # If search via HTMX
+    if request.htmx and request.headers.get('HX-Target') == 'client-grid':
         return render(request, 'clients/client_card.html', {'clients': clients})
     
+    # Navigation or full page load
     return render(request, 'clients/main.html', {'clients': clients})
 
 #CREATE
+@login_required
 def add_client(request):
     if request.method == "POST":
         nama = request.POST.get('nama_lengkap')
@@ -51,6 +50,7 @@ def add_client(request):
     return render(request, 'clients/client_form.html')
 
 #UPDATE
+@login_required
 def update_client(request, pk):
     client = get_object_or_404(Client, pk=pk)
     
@@ -73,6 +73,7 @@ def update_client(request, pk):
 
 #DELETE
 @require_http_methods(["DELETE"])
+@login_required
 def delete_client(request, pk):
     client = get_object_or_404(Client, pk=pk)
     client.delete()

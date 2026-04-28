@@ -16,6 +16,7 @@ def billing_list(request):
         'total_piutang': total_piutang
     })
 
+@login_required
 def billing_detail(request, pk):
     # Sekarang get_object_or_404 sudah benar namanya
     billing = get_object_or_404(Billing, pk=pk)

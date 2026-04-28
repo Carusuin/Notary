@@ -1,5 +1,4 @@
-{% extends 'navbar.html' %}
-
+{% extends request.htmx|yesno:"base_htmx.html,navbar.html" %} 
 {% block content %}
 <div class="p-6 max-w-4xl mx-auto">
     <!-- Tombol Kembali -->

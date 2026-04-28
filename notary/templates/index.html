@@ -1,6 +1,5 @@
-{% extends 'navbar.html' %} {% block content %}
-<div class="animate-in fade-in duration-700 overflow-hidden">
-  <div class="mb-8">
+{% extends request.htmx|yesno:"base_htmx.html,navbar.html" %} {% block content %}
+<div class="animate-in fade-in duration-700 overflow-hidden">  <div class="mb-8">
     <h1 class="text-3xl font-bold text-gray-800">Selamat Datang !</h1>
     <p class="text-gray-500">
       Berikut adalah ringkasan operasional kantor Notaris hari ini.

@@ -1,4 +1,4 @@
-{% extends 'navbar.html' %}
+{% extends request.htmx|yesno:"base_htmx.html,navbar.html" %}
 
 {% block content %}
 <div class="animate-in fade-in duration-500">
@@ -56,6 +56,8 @@
         </table>
     </div>
 </div>
+{% endblock %}
 
+{% block extra_body %}
 <div id="modal-container"></div>
 {% endblock %}
