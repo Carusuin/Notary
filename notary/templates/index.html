@@ -1,18 +1,17 @@
-{% extends request.htmx|yesno:"base_htmx.html,navbar.html" %} {% block content %}
-<div class="animate-in fade-in duration-700 overflow-hidden">  <div class="mb-8">
-    <h1 class="text-3xl font-bold text-gray-800">Selamat Datang !</h1>
-    <p class="text-gray-500">
-      Berikut adalah ringkasan operasional kantor Notaris hari ini.
-    </p>
+{% extends request.htmx|yesno:"base_htmx.html,navbar.html" %} 
+{% load humanize %}
+{% block content %}
+<div class="page-move-in overflow-hidden">  <div class="mb-8">
   </div>
 
   <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-10">
+    <!-- Total Penghadap -->
     <div
       class="bg-white p-6 rounded-3xl shadow-sm border border-gray-100 hover:shadow-md transition-shadow group"
     >
       <div class="flex items-center justify-between mb-4">
         <div
-          class="w-12 h-12 bg-indigo-100 rounded-2xl flex items-center justify-center text-indigo-600 group-hover:bg-indigo-600 group-hover:text-white transition-colors"
+          class="w-12 h-12 bg-blue-50 rounded-2xl flex items-center justify-center text-[#1e40af] group-hover:bg-gradient-to-r group-hover:from-[#1e40af] group-hover:to-[#0f172a] group-hover:text-white transition-all duration-300"
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -29,21 +28,18 @@
             />
           </svg>
         </div>
-        <span
-          class="text-xs font-bold text-green-500 bg-green-50 px-2 py-1 rounded-lg"
-          >+12%</span
-        >
       </div>
       <h3 class="text-gray-400 text-sm font-medium">Total Penghadap</h3>
-      <p class="text-2xl font-bold text-gray-800">1,284</p>
+      <p class="text-2xl font-bold text-gray-800">{{ total_clients|intcomma }}</p>
     </div>
 
+    <!-- Akta Bulan Ini -->
     <div
       class="bg-white p-6 rounded-3xl shadow-sm border border-gray-100 hover:shadow-md transition-shadow group"
     >
       <div class="flex items-center justify-between mb-4">
         <div
-          class="w-12 h-12 bg-purple-100 rounded-2xl flex items-center justify-center text-purple-600 group-hover:bg-purple-600 group-hover:text-white transition-colors"
+          class="w-12 h-12 bg-blue-50 rounded-2xl flex items-center justify-center text-[#1e40af] group-hover:bg-gradient-to-r group-hover:from-[#1e40af] group-hover:to-[#0f172a] group-hover:text-white transition-all duration-300"
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -62,15 +58,16 @@
         </div>
       </div>
       <h3 class="text-gray-400 text-sm font-medium">Akta Bulan Ini</h3>
-      <p class="text-2xl font-bold text-gray-800">42</p>
+      <p class="text-2xl font-bold text-gray-800">{{ deeds_this_month|intcomma }}</p>
     </div>
 
+    <!-- Menunggu Tanda Tangan -->
     <div
       class="bg-white p-6 rounded-3xl shadow-sm border border-gray-100 hover:shadow-md transition-shadow group"
     >
       <div class="flex items-center justify-between mb-4">
         <div
-          class="w-12 h-12 bg-yellow-100 rounded-2xl flex items-center justify-center text-yellow-600 group-hover:bg-yellow-600 group-hover:text-white transition-colors"
+          class="w-12 h-12 bg-blue-50 rounded-2xl flex items-center justify-center text-[#1e40af] group-hover:bg-gradient-to-r group-hover:from-[#1e40af] group-hover:to-[#0f172a] group-hover:text-white transition-all duration-300"
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -89,15 +86,16 @@
         </div>
       </div>
       <h3 class="text-gray-400 text-sm font-medium">Menunggu Tanda Tangan</h3>
-      <p class="text-2xl font-bold text-gray-800">7</p>
+      <p class="text-2xl font-bold text-gray-800">{{ waiting_signature|intcomma }}</p>
     </div>
 
+    <!-- Tagihan Outstanding -->
     <div
       class="bg-white p-6 rounded-3xl shadow-sm border border-gray-100 hover:shadow-md transition-shadow group"
     >
       <div class="flex items-center justify-between mb-4">
         <div
-          class="w-12 h-12 bg-red-100 rounded-2xl flex items-center justify-center text-red-600 group-hover:bg-red-600 group-hover:text-white transition-colors"
+          class="w-12 h-12 bg-blue-50 rounded-2xl flex items-center justify-center text-[#1e40af] group-hover:bg-gradient-to-r group-hover:from-[#1e40af] group-hover:to-[#0f172a] group-hover:text-white transition-all duration-300"
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -116,7 +114,7 @@
         </div>
       </div>
       <h3 class="text-gray-400 text-sm font-medium">Tagihan Outstanding</h3>
-      <p class="text-2xl font-bold text-gray-800">Rp 12.5M</p>
+      <p class="text-2xl font-bold text-gray-800">Rp {{ outstanding_total|intcomma }}</p>
     </div>
   </div>
 
@@ -124,32 +122,45 @@
     class="bg-white rounded-3xl shadow-sm border border-gray-100 overflow-hidden"
   >
     <div class="p-6 border-b border-gray-50 flex justify-between items-center">
-      <h2 class="text-lg font-bold text-gray-800">Aktivitas Terakhir</h2>
-      <button class="text-indigo-600 text-sm font-semibold hover:underline">
+      <div class="flex items-center space-x-3">
+        <div class="w-1.5 h-6 bg-[#1e40af] rounded-full"></div>
+        <h2 class="text-lg font-bold text-gray-800">Aktivitas Terakhir</h2>
+      </div>
+      <a href="/deeds/" class="text-[#1e40af] text-sm font-semibold hover:underline">
         Lihat Semua
-      </button>
+      </a>
     </div>
     <div class="p-6">
       <div class="space-y-6">
+        {% for client in recent_clients %}
         <div class="flex items-center space-x-4">
-          <div class="w-2 h-2 bg-indigo-500 rounded-full"></div>
+          <div class="w-2 h-2 bg-[#1e40af] rounded-full"></div>
           <div class="flex-1">
             <p class="text-sm text-gray-800 font-medium">
               Input Penghadap Baru:
-              <span class="text-indigo-600">PT. Maju Mundur Jaya</span>
+              <span class="text-[#1e40af]">{{ client.nama_lengkap }}</span>
             </p>
-            <p class="text-xs text-gray-400">15 menit yang lalu</p>
+            <p class="text-xs text-gray-400">{{ client.created_at|naturaltime }}</p>
           </div>
         </div>
+        {% endfor %}
+        
+        {% for deed in recent_deeds %}
         <div class="flex items-center space-x-4">
-          <div class="w-2 h-2 bg-purple-500 rounded-full"></div>
+          <div class="w-2 h-2 bg-[#1e40af]/60 rounded-full"></div>
           <div class="flex-1">
             <p class="text-sm text-gray-800 font-medium">
-              Draf Akta Jual Beli Tanah berhasil dibuat
+              Akta Baru Dibuat: {{ deed.jenis_akta }} - 
+              <span class="text-[#1e40af]">{{ deed.nomor_akta }}</span>
             </p>
-            <p class="text-xs text-gray-400">2 jam yang lalu</p>
+            <p class="text-xs text-gray-400">{{ deed.created_at|naturaltime }}</p>
           </div>
         </div>
+        {% endfor %}
+
+        {% if not recent_clients and not recent_deeds %}
+        <p class="text-sm text-gray-400 text-center py-4">Belum ada aktivitas terbaru.</p>
+        {% endif %}
       </div>
     </div>
   </div>

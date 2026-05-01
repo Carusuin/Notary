@@ -3,7 +3,7 @@
   class="fixed inset-0 bg-gray-900/60 backdrop-blur-md z-[100] flex items-center justify-center p-4 animate-in fade-in duration-300"
 >
   <div
-    class="bg-white rounded-[28px] shadow-2xl w-full max-w-4xl overflow-hidden transform transition-all scale-95 animate-in zoom-in-95 duration-300"
+    class="bg-white rounded-[28px] shadow-2xl w-full max-w-4xl overflow-hidden transform transition-all page-move-in"
   >
     <div
       class="px-8 py-6 border-b border-gray-100 flex justify-between items-center bg-white/80 backdrop-blur-md sticky top-0 z-10"
@@ -112,7 +112,7 @@
         </button>
         <button
           type="submit"
-          class="flex-[2] px-6 py-4 bg-blue-600 text-white font-bold rounded-2xl hover:bg-blue-700 shadow-2xl shadow-blue-200 transition-all active:scale-95 uppercase tracking-widest text-xs"
+          class="flex-[2] px-6 py-4 bg-gradient-to-r from-[#1e40af] to-[#0f172a] text-white font-bold rounded-2xl hover:opacity-90 shadow-2xl transition-all active:scale-95 uppercase tracking-widest text-xs"
         >
           {% if client %}Simpan Perubahan{% else %}Tambah Klien{% endif %}
         </button>

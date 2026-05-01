@@ -12,7 +12,7 @@
         color: #000;
       }
 
-      /* HEADER - Tanpa Border per Baris */
+      /* HEADER */
       .header {
         text-align: center;
         margin-bottom: 5px;
@@ -52,7 +52,7 @@
         text-decoration: underline;
       }
 
-      /* TABLE KONTEN - Bersih tanpa border */
+      /* TABLE KONTEN */
       .content-table {
         width: 100%;
         border-collapse: collapse;
@@ -61,7 +61,7 @@
       .content-table td {
         padding: 4px 0;
         font-size: 10.5pt;
-        border: none; /* Paksa hapus border */
+        border: none;
       }
       .label {
         width: 30%;
@@ -116,7 +116,7 @@
       <tr>
         <td class="label">Nama Lengkap Klien</td>
         <td class="sep">:</td>
-        <td class="value">{{ deed.client.name }}</td>
+        <td class="value">{{ deed.client.nama_lengkap }}</td>
       </tr>
       <tr>
         <td class="label">Nomor NIK Klien</td>
@@ -126,27 +126,32 @@
       <tr>
         <td class="label">Nomor Akta</td>
         <td class="sep">:</td>
-        <td class="value" style="color: #1a56db">{{ deed.no_akta }}</td>
+        <td class="value" style="color: #1a56db">{{ deed.nomor_akta }}</td>
       </tr>
       <tr>
         <td class="label">Kategori Akta</td>
         <td class="sep">:</td>
-        <td class="value">{{ deed.get_category_display }}</td>
+        <td class="value">{{ deed.get_kategori_display }}</td>
       </tr>
       <tr>
         <td class="label">Jenis Akta</td>
         <td class="sep">:</td>
-        <td class="value">{{ deed.deed_type }}</td>
+        <td class="value">{{ deed.jenis_akta }}</td>
+      </tr>
+      <tr>
+        <td class="label">Nama Entitas/PT</td>
+        <td class="sep">:</td>
+        <td class="value">{{ deed.nama_entitas|default:"-" }}</td>
       </tr>
       <tr>
         <td class="label">Tanggal Pembuatan</td>
         <td class="sep">:</td>
-        <td class="value">{{ deed.date_created|date:"d F Y" }}</td>
+        <td class="value">{{ deed.tanggal_buat|date:"d F Y" }} {% if deed.jam_buat %}Pukul {{ deed.jam_buat|time:"H:i" }} WIB{% endif %}</td>
       </tr>
       <tr>
         <td class="label">Keterangan</td>
         <td class="sep">:</td>
-        <td class="value">{{ deed.description|default:"-" }}</td>
+        <td class="value">{{ deed.keterangan|default:"-" }}</td>
       </tr>
     </table>
 
@@ -160,7 +165,7 @@
         <td>
           Yang Menyerahkan (Klien),
           <div class="sig-box"></div>
-          <strong>{{ deed.client.name }}</strong>
+          <strong>{{ deed.client.nama_lengkap }}</strong>
         </td>
         <td>
           Klaten, {{ "now"|date:"d F Y" }}<br />

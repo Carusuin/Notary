@@ -1,16 +1,15 @@
 {% extends request.htmx|yesno:"base_htmx.html,navbar.html" %}
 
 {% block content %}
-<div class="animate-in fade-in duration-500">
+<div class="page-move-in">
     <div class="flex justify-between items-start mb-6">
         <div>
             <h1 class="text-2xl font-bold text-gray-800">Manajemen Akta</h1>
             <p class="text-gray-500 text-sm">Kelola arsip akta Notaris dan PPAT</p>
         </div>
-        <button hx-get="/deeds/add/" 
+        <button hx-get="/deeds/add/"
                 hx-target="#modal-container"
-                class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-xl flex items-center shadow-sm transition-all active:scale-95">
-            <span class="mr-2">+</span> Buat Akta Baru
+                class="bg-gradient-to-r from-[#1e40af] to-[#0f172a] text-white px-4 py-2 rounded-xl flex items-center shadow-sm transition-all active:scale-95 hover:opacity-90">            <span class="mr-2">+</span> Buat Akta Baru
         </button>
     </div>
 

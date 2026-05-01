@@ -1,6 +1,6 @@
 {% extends request.htmx|yesno:"base_htmx.html,navbar.html" %} 
 {% block content %}
-<div class="p-6 max-w-4xl mx-auto">
+<div class="page-move-in p-6 max-w-4xl mx-auto">
     <!-- Tombol Kembali -->
     <a href="{% url 'finance:billing_list' %}" class="text-sm text-gray-500 hover:text-purple-600 mb-4 inline-block">
         &larr; Kembali ke Daftar Billing
